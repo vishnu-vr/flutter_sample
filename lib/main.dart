@@ -25,9 +25,16 @@ class Home extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Test(20.0, Colors.red),
+          Expanded(
+            flex: 2,
+            child: Image.network(
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Photos_icon_%282020%29.svg/1200px-Google_Photos_icon_%282020%29.svg.png'),
+          ),
+          Test(20.0, Colors.grey),
           Test(20.0, Colors.cyan),
-          Test(20.0, Colors.brown),
+          Test(20.0, Colors.red),
+          Test(20.0, Colors.green),
+          Test(20.0, Colors.lightBlue),
         ],
       ),
       floatingActionButton: SadFloatingBtn(),
@@ -46,15 +53,20 @@ class Test extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(this.padding),
-      color: this.color,
-      child: Center(
+    return Expanded(
+      flex: 1,
+      child: Container(
+        // margin: EdgeInsets.all(20),
+        height: 100,
+        padding: EdgeInsets.all(this.padding),
+        color: this.color,
+        child: Center(
           child: Text(
-        'data',
-        style: TextStyle(color: Colors.yellow),
-      )),
+            'data',
+            style: TextStyle(color: Colors.yellow),
+          ),
+        ),
+      ),
     );
   }
 }
