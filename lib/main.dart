@@ -26,13 +26,22 @@ class Home extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
-        child: Profile(),
+        child: Profile('Vishnu Ramesh', 'vishnuramesh19@gmail.com'),
       ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class Profile extends StatelessWidget {
+  var devName;
+  var email;
+
+  Profile(devName, email) {
+    this.devName = devName;
+    this.email = email;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,7 +68,7 @@ class Profile extends StatelessWidget {
         ),
         SizedBox(height: 10.0),
         Text(
-          'Vishnu Ramesh',
+          this.devName,
           style: TextStyle(
             color: Colors.amberAccent,
             letterSpacing: 2.0,
@@ -86,7 +95,7 @@ class Profile extends StatelessWidget {
         ),
         SizedBox(height: 10.0),
         Text(
-          'vishnuramesh19@gmail.com',
+          this.email,
           style: TextStyle(
             color: Colors.amberAccent,
             letterSpacing: 2.0,
