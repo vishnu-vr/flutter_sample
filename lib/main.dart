@@ -15,74 +15,112 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        leading: Icon(Icons.alternate_email),
-        title: Text('vishnu'),
-        centerTitle: false,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.grey[850],
+        title: Text(
+          'Developer',
+          // style: TextStyle(),
+        ),
+        centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Image.network(
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Photos_icon_%282020%29.svg/1200px-Google_Photos_icon_%282020%29.svg.png'),
-          ),
-          Test(20.0, Colors.grey),
-          Test(20.0, Colors.cyan),
-          Test(20.0, Colors.red),
-          Test(20.0, Colors.green),
-          Test(20.0, Colors.lightBlue),
-        ],
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
+        child: Profile(),
       ),
-      floatingActionButton: SadFloatingBtn(),
     );
   }
 }
 
-// ignore: must_be_immutable
-class Test extends StatelessWidget {
-  var padding;
-  var color;
-  Test(padding, color) {
-    this.padding = padding;
-    this.color = color;
-  }
-
+class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        // margin: EdgeInsets.all(20),
-        height: 100,
-        padding: EdgeInsets.all(this.padding),
-        color: this.color,
-        child: Center(
-          child: Text(
-            'data',
-            style: TextStyle(color: Colors.yellow),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(
+          child: CircleAvatar(
+            radius: 50,
+            backgroundImage: AssetImage('assets/pp.jpg'),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class SadFloatingBtn extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: FloatingActionButton(
-        onPressed: () {
-          final bar = SnackBar(content: Text('Don\'t press me i\'m sad'));
-          Scaffold.of(context).showSnackBar(bar);
-        },
-        child: Text(':('),
-        backgroundColor: Colors.black,
-      ),
+        SizedBox(height: 20.0),
+        Divider(
+          height: 60,
+          color: Colors.grey[800],
+        ),
+        Text(
+          'Name',
+          style: TextStyle(
+            color: Colors.white,
+            letterSpacing: 2.0,
+            fontSize: 20,
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Text(
+          'Vishnu Ramesh',
+          style: TextStyle(
+            color: Colors.amberAccent,
+            letterSpacing: 2.0,
+            fontSize: 30,
+          ),
+        ),
+        SizedBox(height: 30.0),
+        Row(
+          children: [
+            Text(
+              'Email ',
+              style: TextStyle(
+                color: Colors.white,
+                letterSpacing: 2.0,
+                fontSize: 20,
+              ),
+            ),
+            Icon(
+              Icons.email,
+              color: Colors.amberAccent,
+              size: 30.0,
+            ),
+          ],
+        ),
+        SizedBox(height: 10.0),
+        Text(
+          'vishnuramesh19@gmail.com',
+          style: TextStyle(
+            color: Colors.amberAccent,
+            letterSpacing: 2.0,
+            fontSize: 20,
+          ),
+        ),
+        SizedBox(height: 30.0),
+        Row(
+          children: [
+            Text(
+              'Github ',
+              style: TextStyle(
+                color: Colors.white,
+                letterSpacing: 2.0,
+                fontSize: 20,
+              ),
+            ),
+            Icon(
+              Icons.code,
+              color: Colors.amberAccent,
+              size: 30.0,
+            ),
+          ],
+        ),
+        Text(
+          'https://github.com/vishnu-vr',
+          style: TextStyle(
+            color: Colors.amberAccent,
+            letterSpacing: 2.0,
+            fontSize: 20,
+          ),
+        ),
+        SizedBox(height: 30.0),
+      ],
     );
   }
 }
