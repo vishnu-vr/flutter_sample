@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:clipboard_manager/clipboard_manager.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,6 +19,43 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final List<Map> atmCardList = [
+    {
+      "bank_name": "Axis Bank",
+      "card_number": "0000-0000-0000-0000",
+      "exp_date": "08/22",
+      "cvv": "220"
+    },
+    {
+      "bank_name": "State Bank",
+      "card_number": "0000-0000-0000-0000",
+      "exp_date": "08/22",
+      "cvv": "220"
+    },
+    {
+      "bank_name": "Federal Bank",
+      "card_number": "0000-0000-0000-0000",
+      "exp_date": "08/22",
+      "cvv": "220"
+    },
+  ];
+
+  void addNewCard(
+    String bankName,
+    String cardNumber,
+    String expDate,
+    String cvv,
+  ) {
+    setState(() {
+      atmCardList.add({
+        "bank_name": bankName,
+        "card_number": cardNumber,
+        "exp_date": expDate,
+        "cvv": cvv,
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,12 +68,19 @@ class _HomeState extends State<Home> {
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
         child: ListView(
-          children: [
-            AtmCard("Axis Bank", "0000-0000-0000-0000", "08/22", "220"),
-            AtmCard("Federal Bank", "0000-0000-0000-0000", "08/22", "220"),
-            AtmCard("State Bank", "0000-0000-0000-0000", "08/22", "220"),
-          ],
+          children: this
+              .atmCardList
+              .map((e) => AtmCard(
+                  e["bank_name"], e["card_number"], e["exp_date"], e["cvv"]))
+              .toList(),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            {this.addNewCard("bankName", "cardNumber", "expDate", "cvv")},
+        child: Icon(Icons.add),
+        backgroundColor: Colors.black87,
+        elevation: 20.0,
       ),
     );
   }
@@ -50,33 +95,30 @@ class AtmCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      onPressed: () => {print("card clicked")},
-      child: Card(
-        shadowColor: Colors.black,
-        elevation: 10.0,
-        color: Colors.red[400],
-        child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Center(
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  this.bankName.toUpperCase(),
-                  style: TextStyle(
-                    letterSpacing: 1.0,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0,
-                    color: Colors.black87,
-                  ),
+    return Card(
+      shadowColor: Colors.black,
+      elevation: 10.0,
+      color: Colors.red[400],
+      child: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Center(
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                this.bankName.toUpperCase(),
+                style: TextStyle(
+                  letterSpacing: 1.0,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15.0,
+                  color: Colors.black87,
                 ),
-                Divider(color: Colors.black),
-                AtmCardInsideInfo("Card Number", this.cardNumber),
-                AtmCardInsideInfo("Exp Date", this.expDate),
-                AtmCardInsideInfo("CVV", this.cvv),
-              ],
-            ),
+              ),
+              Divider(color: Colors.black),
+              AtmCardInsideInfo("Card Number", this.cardNumber),
+              AtmCardInsideInfo("Exp Date", this.expDate),
+              AtmCardInsideInfo("CVV", this.cvv),
+            ],
           ),
         ),
       ),
@@ -118,7 +160,19 @@ class AtmCardInsideInfo extends StatelessWidget {
                 ),
               ),
               FlatButton(
-                onPressed: () => {print("copy to clipboard")},
+                onPressed: () => {
+                  ClipboardManager.copyToClipBoard(this.holderInfo)
+                      .then((result) {
+                    final snackBar = SnackBar(
+                      content: Text('Copied to Clipboard'),
+                      // action: SnackBarAction(
+                      //   label: 'Undo',
+                      //   onPressed: () {},
+                      // ),
+                    );
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  })
+                },
                 child: Icon(Icons.content_copy, size: 22.0),
               )
             ],
