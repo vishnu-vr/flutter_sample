@@ -18,87 +18,68 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Map> listOfQuotes = [
-    {
-      "quote": "Deep inside my shoe my sock is slipping off.",
-      "author": "Vishnu Ramesh"
-    },
-    {
-      "quote":
-          "Accept the thgins you cannot change, Have the courage to change the things you can and have the wisdom to know the difference.",
-      "author": "Justice League"
-    },
-    {
-      "quote": "It's not who I am underneath, but what I do that defines me.",
-      "author": "Bruce Wayne"
-    }
-  ];
-
-  void removeQuotes(quote) {
-    setState(() {
-      this.listOfQuotes.remove(quote);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quotes'),
+        backgroundColor: Colors.grey[850],
+        title: Text("Locker"),
         centerTitle: true,
-        backgroundColor: Colors.grey[800],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: ListView(
-          children: listOfQuotes.map((e) => Quote(e, removeQuotes)).toList(),
-        ),
       ),
       backgroundColor: Colors.grey[900],
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
+        child: ListView(
+          children: [
+            AtmCard("Axis Bank", "0000-0000-0000-0000"),
+            AtmCard("Federal Bank", "0000-0000-0000-0000"),
+            AtmCard("State Bank", "0000-0000-0000-0000"),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class Quote extends StatelessWidget {
-  final Map quote;
-  final Function removeQuotes;
-
-  Quote(this.quote, this.removeQuotes);
+class AtmCard extends StatelessWidget {
+  final String bankName;
+  final String cardNumber;
+  AtmCard(this.bankName, this.cardNumber);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return FlatButton(
+      onPressed: () => {print("card clicked")},
       child: Card(
-        elevation: 10.0,
         shadowColor: Colors.black,
-        color: Colors.red[300],
-        // margin: EdgeInsets.all(10),
+        elevation: 10.0,
+        color: Colors.red[400],
         child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Column(
-            children: [
+          padding: EdgeInsets.all(20.0),
+          child: Center(
+            child: Column(children: [
               Text(
-                this.quote['quote'],
+                this.bankName,
                 style: TextStyle(
-                  fontSize: 25,
+                  letterSpacing: 1.0,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15.0,
+                  color: Colors.white,
                 ),
               ),
-              SizedBox(
-                height: 10,
+              Divider(
+                color: Colors.black,
               ),
-              Divider(),
               Text(
-                " - " + this.quote['author'],
+                this.cardNumber,
                 style: TextStyle(
-                  fontSize: 15,
+                  letterSpacing: 1.0,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15.0,
+                  color: Colors.black,
                 ),
               ),
-              Divider(),
-              FlatButton(
-                onPressed: () => this.removeQuotes(quote),
-                child: Icon(Icons.delete),
-              )
-            ],
+            ]),
           ),
         ),
       ),
