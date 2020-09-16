@@ -12,7 +12,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final List<Map> listOfQuotes = [
     {
       "quote": "Deep inside my shoe my sock is slipping off.",
@@ -28,7 +33,12 @@ class Home extends StatelessWidget {
       "author": "Bruce Wayne"
     }
   ];
-  // List<String> listOfAuthors = ["Vishnu Ramesh"];
+
+  void removeQuotes(quote) {
+    setState(() {
+      this.listOfQuotes.remove(quote);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +50,8 @@ class Home extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
-        child: Column(
-          children: listOfQuotes.map((e) => Quote(e)).toList(),
+        child: ListView(
+          children: listOfQuotes.map((e) => Quote(e, removeQuotes)).toList(),
         ),
       ),
       backgroundColor: Colors.grey[900],
@@ -51,9 +61,9 @@ class Home extends StatelessWidget {
 
 class Quote extends StatelessWidget {
   final Map quote;
-  // final String author;
+  final Function removeQuotes;
 
-  Quote(this.quote);
+  Quote(this.quote, this.removeQuotes);
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +92,11 @@ class Quote extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15,
                 ),
+              ),
+              Divider(),
+              FlatButton(
+                onPressed: () => this.removeQuotes(quote),
+                child: Icon(Icons.delete),
               )
             ],
           ),
