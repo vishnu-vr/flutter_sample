@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,124 +13,80 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatelessWidget {
+  final List<Map> listOfQuotes = [
+    {
+      "quote": "Deep inside my shoe my sock is slipping off.",
+      "author": "Vishnu Ramesh"
+    },
+    {
+      "quote":
+          "Accept the thgins you cannot change, Have the courage to change the things you can and have the wisdom to know the difference.",
+      "author": "Justice League"
+    },
+    {
+      "quote": "It's not who I am underneath, but what I do that defines me.",
+      "author": "Bruce Wayne"
+    }
+  ];
+  // List<String> listOfAuthors = ["Vishnu Ramesh"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        backgroundColor: Colors.grey[850],
-        title: Text(
-          'Developer',
-          // style: TextStyle(),
-        ),
+        title: Text('Quotes'),
         centerTitle: true,
+        backgroundColor: Colors.grey[800],
       ),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
-        child: Profile('Vishnu Ramesh', 'vishnuramesh19@gmail.com'),
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: listOfQuotes.map((e) => Quote(e)).toList(),
+        ),
       ),
+      backgroundColor: Colors.grey[900],
     );
   }
 }
 
-// ignore: must_be_immutable
-class Profile extends StatelessWidget {
-  var devName;
-  var email;
+class Quote extends StatelessWidget {
+  final Map quote;
+  // final String author;
 
-  Profile(devName, email) {
-    this.devName = devName;
-    this.email = email;
-  }
+  Quote(this.quote);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Center(
-          child: CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage('assets/pp.jpg'),
-          ),
-        ),
-        SizedBox(height: 20.0),
-        Divider(
-          height: 60,
-          color: Colors.grey[800],
-        ),
-        Text(
-          'Name',
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 2.0,
-            fontSize: 20,
-          ),
-        ),
-        SizedBox(height: 10.0),
-        Text(
-          this.devName,
-          style: TextStyle(
-            color: Colors.amberAccent,
-            letterSpacing: 2.0,
-            fontSize: 30,
-          ),
-        ),
-        SizedBox(height: 30.0),
-        Row(
-          children: [
-            Text(
-              'Email ',
-              style: TextStyle(
-                color: Colors.white,
-                letterSpacing: 2.0,
-                fontSize: 20,
+    return Container(
+      child: Card(
+        elevation: 10.0,
+        shadowColor: Colors.black,
+        color: Colors.red[300],
+        // margin: EdgeInsets.all(10),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Text(
+                this.quote['quote'],
+                style: TextStyle(
+                  fontSize: 25,
+                ),
               ),
-            ),
-            Icon(
-              Icons.email,
-              color: Colors.amberAccent,
-              size: 30.0,
-            ),
-          ],
-        ),
-        SizedBox(height: 10.0),
-        Text(
-          this.email,
-          style: TextStyle(
-            color: Colors.amberAccent,
-            letterSpacing: 2.0,
-            fontSize: 20,
-          ),
-        ),
-        SizedBox(height: 30.0),
-        Row(
-          children: [
-            Text(
-              'Github ',
-              style: TextStyle(
-                color: Colors.white,
-                letterSpacing: 2.0,
-                fontSize: 20,
+              SizedBox(
+                height: 10,
               ),
-            ),
-            Icon(
-              Icons.code,
-              color: Colors.amberAccent,
-              size: 30.0,
-            ),
-          ],
-        ),
-        Text(
-          'https://github.com/vishnu-vr',
-          style: TextStyle(
-            color: Colors.amberAccent,
-            letterSpacing: 2.0,
-            fontSize: 20,
+              Divider(),
+              Text(
+                " - " + this.quote['author'],
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              )
+            ],
           ),
         ),
-        SizedBox(height: 30.0),
-      ],
+      ),
     );
   }
 }
