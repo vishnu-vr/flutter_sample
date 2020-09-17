@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // home: SafeArea(child: Home()),
-      initialRoute: '/',
+      initialRoute: '/add_card',
       routes: {
         '/': (context) => Home(),
         '/add_card': (context) => Add(),
