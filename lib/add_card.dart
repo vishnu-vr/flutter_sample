@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class Add extends StatefulWidget {
   final _formKey = GlobalKey<FormState>();
+  final Function modifyData;
+
+  Add({this.modifyData});
 
   String bankName;
   String cardNumber;
@@ -15,6 +18,19 @@ class Add extends StatefulWidget {
 }
 
 class _AddState extends State<Add> {
+  void addButtonPressed() {
+    if (this.widget._formKey.currentState.validate()) {
+      this.widget._formKey.currentState.save();
+
+      this.widget.modifyData(
+            this.widget.bankName,
+            this.widget.cardNumber,
+            this.widget.expDate,
+            this.widget.cvv,
+          );
+    }
+  }
+
   Widget addButton() {
     return Container(
       padding: EdgeInsets.fromLTRB(120.0, 0.0, 120.0, 0.0),
@@ -23,10 +39,7 @@ class _AddState extends State<Add> {
         elevation: 10.0,
         color: Colors.grey[800],
         textColor: Colors.white,
-        onPressed: () => {
-          if (this.widget._formKey.currentState.validate())
-            {this.widget._formKey.currentState.save()}
-        },
+        onPressed: addButtonPressed,
         child: Text("Add"),
       ),
     );
@@ -94,6 +107,10 @@ class _AddState extends State<Add> {
             ),
             SizedBox(height: 10),
             this.addButton(),
+            // FloatingActionButton(
+            //   onPressed: () => getStringValuesSF(),
+            //   child: Text("data"),
+            // ),
           ],
         ),
       ),

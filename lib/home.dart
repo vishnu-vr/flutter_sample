@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:clipboard_manager/clipboard_manager.dart';
+import 'package:sample/help.dart';
+import 'dart:convert';
+import 'package:sample/loading.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -7,26 +10,36 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Map> atmCardList = [
-    {
-      "bank_name": "Axis Bank",
-      "card_number": "0000-0000-0000-0000",
-      "exp_date": "08/22",
-      "cvv": "220"
-    },
-    {
-      "bank_name": "State Bank",
-      "card_number": "0000-0000-0000-0000",
-      "exp_date": "08/22",
-      "cvv": "220"
-    },
-    {
-      "bank_name": "Federal Bank",
-      "card_number": "0000-0000-0000-0000",
-      "exp_date": "08/22",
-      "cvv": "220"
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // print(getStringValuesSF());
+    setAtmList();
+  }
+
+  void setAtmList() async {
+    String storedData = await getStringValuesSF();
+    setState(() {
+      this.atmCardList = json.decode(storedData);
+    });
+  }
+
+  Widget displayContent() {
+    final Widget theLoader = Loader();
+
+    if (this.atmCardList == null)
+      return theLoader;
+    else
+      return ListView(
+        children: this
+            .atmCardList
+            .map((e) => AtmCard(
+                e["bank_name"], e["card_number"], e["exp_date"], e["cvv"]))
+            .toList(),
+      );
+  }
+
+  List<dynamic> atmCardList;
 
   void addNewCard(
     String bankName,
@@ -34,14 +47,18 @@ class _HomeState extends State<Home> {
     String expDate,
     String cvv,
   ) {
+    Map<String, String> data = {
+      "bank_name": bankName,
+      "card_number": cardNumber,
+      "exp_date": expDate,
+      "cvv": cvv,
+    };
+
     setState(() {
-      atmCardList.add({
-        "bank_name": bankName,
-        "card_number": cardNumber,
-        "exp_date": expDate,
-        "cvv": cvv,
-      });
+      atmCardList.add(data);
     });
+
+    addStringToSF(json.encode(this.atmCardList));
   }
 
   @override
@@ -55,16 +72,13 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.grey[900],
       body: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
-        child: ListView(
-          children: this
-              .atmCardList
-              .map((e) => AtmCard(
-                  e["bank_name"], e["card_number"], e["exp_date"], e["cvv"]))
-              .toList(),
-        ),
+        child: this.displayContent(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, "/add_card"),
+        onPressed: () => Navigator.of(context).pushNamed(
+          '/add',
+          arguments: addNewCard,
+        ),
         child: Icon(Icons.add),
         backgroundColor: Colors.black87,
         elevation: 20.0,
