@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:sample/aes_key.dart' as aes_key;
 
 addStringToSF(String data) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -29,7 +30,7 @@ getStringValuesSF() async {
 
 String aes({String data, bool en: true}) {
   final plainText = data;
-  final key = encrypt.Key.fromUtf8('my 32 length key................');
+  final key = encrypt.Key.fromUtf8(aes_key.Key.getKey());
   final iv = encrypt.IV.fromLength(16);
 
   final encrypter = encrypt.Encrypter(encrypt.AES(key));

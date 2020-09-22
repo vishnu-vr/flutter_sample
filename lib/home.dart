@@ -23,13 +23,13 @@ class _HomeState extends State<Home> {
   }
 
   void setAtmList() async {
-    String storedData = aes(data: await getStringValuesSF(), en: false);
+    String storedData = await getStringValuesSF();
 
     setState(() {
       if (storedData == null)
         this.atmCardList = [];
       else
-        this.atmCardList = json.decode(storedData);
+        this.atmCardList = json.decode(aes(data: storedData, en: false));
     });
   }
 
