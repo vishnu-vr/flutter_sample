@@ -43,6 +43,21 @@ class _HomeState extends State<Home> {
     addStringToSF(aes(data: json.encode(this.atmCardList)));
   }
 
+  // edit existing info
+  void editList(Map<String, String> oldInfo, Map<String, String> newInfo) {
+    int index = 0;
+
+    for (int i = 0; i < this.atmCardList.length; i++) {
+      if (this.atmCardList[i]["card_number"] == newInfo["card_number"] &&
+          this.atmCardList[i]["bank_name"] == newInfo["bank_name"]) index = i;
+    }
+    setState(() {
+      print(index);
+      this.atmCardList[index] = newInfo;
+      addStringToSF(aes(data: json.encode(this.atmCardList)));
+    });
+  }
+
   Widget displayContent() {
     final Widget theLoader = Loader();
 
@@ -66,7 +81,7 @@ class _HomeState extends State<Home> {
         children: this
             .atmCardList
             .map((e) => AtmCard(e["bank_name"], e["card_number"], e["exp_date"],
-                e["cvv"], () => {this.deleteCard(e)}))
+                e["cvv"], () => {this.deleteCard(e)}, this.editList))
             .toList(),
       );
   }
@@ -107,7 +122,7 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed(
           '/add',
-          arguments: addNewCard,
+          arguments: [addNewCard, "add"],
         ),
         child: Icon(Icons.add),
         backgroundColor: Colors.black87,
@@ -119,6 +134,7 @@ class _HomeState extends State<Home> {
 
 class AtmCard extends StatelessWidget {
   final Function deleteCard;
+  final Function editList;
 
   final String bankName;
   final String cardNumber;
@@ -130,6 +146,7 @@ class AtmCard extends StatelessWidget {
     this.expDate,
     this.cvv,
     this.deleteCard,
+    this.editList,
   );
 
   @override
@@ -157,9 +174,29 @@ class AtmCard extends StatelessWidget {
                       color: Colors.black87,
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: this.deleteCard,
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () => Navigator.of(context).pushNamed(
+                          '/add',
+                          arguments: [
+                            this.editList,
+                            "edit",
+                            {
+                              "bank_name": this.bankName,
+                              "card_number": this.cardNumber,
+                              "exp_date": this.expDate,
+                              "cvv": this.cvv
+                            }
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: this.deleteCard,
+                      ),
+                    ],
                   ),
                 ],
               ),

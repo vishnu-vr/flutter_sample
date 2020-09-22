@@ -13,7 +13,7 @@ class RouteGenerator {
       case '/add':
         return MaterialPageRoute(
           builder: (_) => Add(
-            modifyData: args,
+            args,
           ),
         );
       default:
