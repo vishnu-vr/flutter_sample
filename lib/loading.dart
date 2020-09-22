@@ -5,9 +5,9 @@ class Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Colors.grey[900],
       child: SpinKitWave(
-        color: Colors.black,
+        color: Colors.white,
         size: 70.0,
       ),
     );
