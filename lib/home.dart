@@ -10,6 +10,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<dynamic> atmCardList;
+
   @override
   void initState() {
     super.initState();
@@ -38,8 +40,6 @@ class _HomeState extends State<Home> {
             .toList(),
       );
   }
-
-  List<dynamic> atmCardList;
 
   void addNewCard(
     String bankName,
@@ -106,14 +106,24 @@ class AtmCard extends StatelessWidget {
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                this.bankName.toUpperCase(),
-                style: TextStyle(
-                  letterSpacing: 1.0,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
-                  color: Colors.black87,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    this.bankName.toUpperCase(),
+                    style: TextStyle(
+                      letterSpacing: 1.0,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  SizedBox(width: 70),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () => {print("delete me boss")},
+                  ),
+                ],
               ),
               Divider(color: Colors.black),
               AtmCardInsideInfo("Card Number", this.cardNumber),
