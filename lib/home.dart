@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    // print(getStringValuesSF());
+
     setAtmList();
   }
 
@@ -23,12 +23,10 @@ class _HomeState extends State<Home> {
     String storedData = await getStringValuesSF();
 
     setState(() {
-      // this.atmCardList = json.decode(storedData);
       if (storedData == null)
         this.atmCardList = [];
       else
         this.atmCardList = json.decode(storedData);
-      // print();
     });
   }
 
