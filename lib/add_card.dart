@@ -3,14 +3,41 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class Add extends StatefulWidget {
   final _formKey = GlobalKey<FormState>();
-  final Function modifyData;
+  Function modifyData;
+  String modification;
 
-  Add({this.modifyData});
+  Add(List listOfArgs) {
+    // the function passed
+    // eg addNewCard for adding new card
+    // or editList for editting existing cards
+    this.modifyData = listOfArgs[0];
+    // specifies the type of modification
+    // ef to add or to edit
+    this.modification = listOfArgs[1];
 
+    if (this.modification == "edit") {
+      print("edit option is selected");
+      this.oldCard = listOfArgs[2];
+      // this.oldBankName = listOfArgs[2]["bank_name"];
+      // this.oldCardNumber = listOfArgs[2]["card_number"];
+      // this.oldExpDate = listOfArgs[2]["exp_date"];
+      // this.oldCvv = listOfArgs[2]["cvv"];
+      // print(oldBankName);
+    }
+  }
+
+  // for new details
   String bankName;
   String cardNumber;
   String expDate;
   String cvv;
+  // for old details if editing is done
+  Map<String, String> oldCard;
+  // String oldBankName;
+  // String oldCardNumber;
+  // String oldExpDate;
+  // String oldCvv;
+
   // final controller = TextEditingController();
 
   @override
@@ -22,17 +49,36 @@ class _AddState extends State<Add> {
     if (this.widget._formKey.currentState.validate()) {
       this.widget._formKey.currentState.save();
 
-      this.widget.modifyData(
-            this.widget.bankName,
-            this.widget.cardNumber,
-            this.widget.expDate,
-            this.widget.cvv,
-          );
+      if (this.widget.modification == "add") {
+        this.widget.modifyData(
+              this.widget.bankName,
+              this.widget.cardNumber,
+              this.widget.expDate,
+              this.widget.cvv,
+            );
+      } else {
+        // print({
+        //   "bank_name": this.widget.bankName,
+        //   "card_number": this.widget.cardNumber,
+        //   "exp_date": this.widget.expDate,
+        //   "cvv": this.widget.cvv,
+        // });
+
+        this.widget.modifyData(this.widget.oldCard, {
+          "bank_name": this.widget.bankName,
+          "card_number": this.widget.cardNumber,
+          "exp_date": this.widget.expDate,
+          "cvv": this.widget.cvv,
+        });
+      }
+
       Navigator.pop(context);
     }
   }
 
   Widget addButton() {
+    String btnText = "add";
+    if (this.widget.modification == "edit") btnText = "edit";
     return Container(
       padding: EdgeInsets.fromLTRB(120.0, 0.0, 120.0, 0.0),
       height: 40.0,
@@ -41,13 +87,17 @@ class _AddState extends State<Add> {
         color: Colors.grey[800],
         textColor: Colors.white,
         onPressed: addButtonPressed,
-        child: Text("Add"),
+        child: Text(btnText),
       ),
     );
   }
 
-  Widget inpBox(String label, Function save) {
+  Widget inpBox(String label, Function save, String oldName) {
     final controller = TextEditingController();
+
+    if (this.widget.modification == "edit")
+      controller.text = this.widget.oldCard[oldName].trim();
+
     return Column(
       children: [
         TextFormField(
@@ -69,6 +119,22 @@ class _AddState extends State<Add> {
     );
   }
 
+  void onSaveForBankCard(String value) {
+    List<String> listOfValues = value.split('-');
+    value = "";
+    for (int i = 0; i < listOfValues.length; i++) {
+      if (listOfValues[i] == '-') continue;
+      value += listOfValues[i];
+    }
+
+    listOfValues = value.split('');
+    this.widget.cardNumber = "";
+    for (int i = 0; i < listOfValues.length; i++) {
+      if (i != 0 && i % 4 == 0) this.widget.cardNumber += '-';
+      this.widget.cardNumber += listOfValues[i];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,19 +154,23 @@ class _AddState extends State<Add> {
                 children: [
                   inpBox(
                     "Bank Name",
-                    (String value) => this.widget.bankName = value,
+                    (String value) => this.widget.bankName = value.trim(),
+                    "bank_name",
                   ),
                   inpBox(
                     "Card Number",
-                    (String value) => this.widget.cardNumber = value,
+                    (String value) => this.onSaveForBankCard(value.trim()),
+                    "card_number",
                   ),
                   inpBox(
                     "Exp Date",
-                    (String value) => this.widget.expDate = value,
+                    (String value) => this.widget.expDate = value.trim(),
+                    "exp_date",
                   ),
                   inpBox(
                     "Cvv",
-                    (String value) => this.widget.cvv = value,
+                    (String value) => this.widget.cvv = value.trim(),
+                    "cvv",
                   ),
                   // inpBox("Card Number"),
                 ],
