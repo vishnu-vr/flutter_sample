@@ -23,9 +23,7 @@ class _HomeState extends State<Home> {
   }
 
   void setAtmList() async {
-    print(aes(data: await testgetSF(), en: false));
-
-    String storedData = await getStringValuesSF();
+    String storedData = aes(data: await getStringValuesSF(), en: false);
 
     setState(() {
       if (storedData == null)
@@ -42,7 +40,7 @@ class _HomeState extends State<Home> {
       this.atmCardList.remove(cardInfo);
     });
 
-    addStringToSF(json.encode(this.atmCardList));
+    addStringToSF(aes(data: json.encode(this.atmCardList)));
   }
 
   Widget displayContent() {
@@ -90,7 +88,7 @@ class _HomeState extends State<Home> {
       atmCardList.add(data);
     });
 
-    addStringToSF(json.encode(this.atmCardList));
+    addStringToSF(aes(data: json.encode(this.atmCardList)));
   }
 
   @override
