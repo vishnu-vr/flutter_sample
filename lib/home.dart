@@ -11,9 +11,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<dynamic> atmCardList;
-  List<dynamic> test = [
-    {"asd": "asd"}
-  ];
 
   @override
   void initState() {
