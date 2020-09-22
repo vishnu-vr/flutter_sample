@@ -6,6 +6,19 @@ addStringToSF(String data) async {
   prefs.setString('info', data);
 }
 
+testSF(String data) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('infoasdasd', data);
+}
+
+testgetSF() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String stringValue = prefs.getString('infoasdasd');
+  // print(stringValue);
+  return stringValue;
+}
+
 getStringValuesSF() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String

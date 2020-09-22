@@ -11,6 +11,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<dynamic> atmCardList;
+  List<dynamic> test = [
+    {"asd": "asd"}
+  ];
 
   @override
   void initState() {
@@ -20,6 +23,8 @@ class _HomeState extends State<Home> {
   }
 
   void setAtmList() async {
+    print(aes(data: await testgetSF(), en: false));
+
     String storedData = await getStringValuesSF();
 
     setState(() {
