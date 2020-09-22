@@ -26,6 +26,14 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void deleteCard(Map cardInfo) {
+    print("card to be deleted : \n");
+    print(cardInfo);
+    setState(() {
+      this.atmCardList.remove(cardInfo);
+    });
+  }
+
   Widget displayContent() {
     final Widget theLoader = Loader();
 
@@ -35,8 +43,8 @@ class _HomeState extends State<Home> {
       return ListView(
         children: this
             .atmCardList
-            .map((e) => AtmCard(
-                e["bank_name"], e["card_number"], e["exp_date"], e["cvv"]))
+            .map((e) => AtmCard(e["bank_name"], e["card_number"], e["exp_date"],
+                e["cvv"], () => {this.deleteCard(e)}))
             .toList(),
       );
   }
@@ -88,11 +96,19 @@ class _HomeState extends State<Home> {
 }
 
 class AtmCard extends StatelessWidget {
+  final Function deleteCard;
+
   final String bankName;
   final String cardNumber;
   final String expDate;
   final String cvv;
-  AtmCard(this.bankName, this.cardNumber, this.expDate, this.cvv);
+  AtmCard(
+    this.bankName,
+    this.cardNumber,
+    this.expDate,
+    this.cvv,
+    this.deleteCard,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +123,9 @@ class AtmCard extends StatelessWidget {
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // SizedBox(width: 10),
                   Text(
                     this.bankName.toUpperCase(),
                     style: TextStyle(
@@ -118,10 +135,9 @@ class AtmCard extends StatelessWidget {
                       color: Colors.black87,
                     ),
                   ),
-                  SizedBox(width: 70),
                   IconButton(
                     icon: Icon(Icons.delete),
-                    onPressed: () => {print("delete me boss")},
+                    onPressed: this.deleteCard,
                   ),
                 ],
               ),
