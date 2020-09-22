@@ -9,7 +9,7 @@ addStringToSF(String data) async {
 getStringValuesSF() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   //Return String
-  String stringValue = prefs.getString('infoa');
+  String stringValue = prefs.getString('info');
   // print(stringValue);
   return stringValue;
 }
