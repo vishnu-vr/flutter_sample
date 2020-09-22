@@ -96,7 +96,7 @@ class _AddState extends State<Add> {
     final controller = TextEditingController();
 
     if (this.widget.modification == "edit")
-      controller.text = this.widget.oldCard[oldName];
+      controller.text = this.widget.oldCard[oldName].trim();
 
     return Column(
       children: [
@@ -119,6 +119,22 @@ class _AddState extends State<Add> {
     );
   }
 
+  void onSaveForBankCard(String value) {
+    List<String> listOfValues = value.split('-');
+    value = "";
+    for (int i = 0; i < listOfValues.length; i++) {
+      if (listOfValues[i] == '-') continue;
+      value += listOfValues[i];
+    }
+
+    listOfValues = value.split('');
+    this.widget.cardNumber = "";
+    for (int i = 0; i < listOfValues.length; i++) {
+      if (i != 0 && i % 4 == 0) this.widget.cardNumber += '-';
+      this.widget.cardNumber += listOfValues[i];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,22 +154,22 @@ class _AddState extends State<Add> {
                 children: [
                   inpBox(
                     "Bank Name",
-                    (String value) => this.widget.bankName = value,
+                    (String value) => this.widget.bankName = value.trim(),
                     "bank_name",
                   ),
                   inpBox(
                     "Card Number",
-                    (String value) => this.widget.cardNumber = value,
+                    (String value) => this.onSaveForBankCard(value.trim()),
                     "card_number",
                   ),
                   inpBox(
                     "Exp Date",
-                    (String value) => this.widget.expDate = value,
+                    (String value) => this.widget.expDate = value.trim(),
                     "exp_date",
                   ),
                   inpBox(
                     "Cvv",
-                    (String value) => this.widget.cvv = value,
+                    (String value) => this.widget.cvv = value.trim(),
                     "cvv",
                   ),
                   // inpBox("Card Number"),

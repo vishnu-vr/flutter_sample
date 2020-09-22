@@ -42,11 +42,17 @@ class _HomeState extends State<Home> {
 
   // edit existing info
   void editList(Map<String, String> oldInfo, Map<String, String> newInfo) {
+    print("old data : \n");
+    print(oldInfo);
+
+    print("new data : \n");
+    print(newInfo);
+
     int index = 0;
 
     for (int i = 0; i < this.atmCardList.length; i++) {
-      if (this.atmCardList[i]["card_number"] == newInfo["card_number"] &&
-          this.atmCardList[i]["bank_name"] == newInfo["bank_name"]) index = i;
+      if (this.atmCardList[i]["card_number"] == oldInfo["card_number"] &&
+          this.atmCardList[i]["bank_name"] == oldInfo["bank_name"]) index = i;
     }
     setState(() {
       print(index);
