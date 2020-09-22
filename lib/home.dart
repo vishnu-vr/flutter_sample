@@ -23,15 +23,18 @@ class _HomeState extends State<Home> {
     String storedData = await getStringValuesSF();
     setState(() {
       this.atmCardList = json.decode(storedData);
+      // print();
     });
   }
 
-  void deleteCard(Map cardInfo) {
+  void deleteCard(Map<String, dynamic> cardInfo) {
     print("card to be deleted : \n");
     print(cardInfo);
     setState(() {
       this.atmCardList.remove(cardInfo);
     });
+
+    addStringToSF(json.encode(this.atmCardList));
   }
 
   Widget displayContent() {
@@ -39,7 +42,20 @@ class _HomeState extends State<Home> {
 
     if (this.atmCardList == null)
       return theLoader;
-    else
+    else if (this.atmCardList.isEmpty) {
+      return Container(
+        child: Center(
+          child: Text(
+            "Add a new card :)",
+            style: TextStyle(
+              color: Colors.grey[400],
+              letterSpacing: 1,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      );
+    } else
       return ListView(
         children: this
             .atmCardList

@@ -28,6 +28,7 @@ class _AddState extends State<Add> {
             this.widget.expDate,
             this.widget.cvv,
           );
+      Navigator.pop(context);
     }
   }
 
